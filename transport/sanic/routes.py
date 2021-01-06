@@ -1,8 +1,9 @@
-from  configs.config import ApplicationConfig
-from transport.sanic.endpoints.health import health_endpoint
+
+from configs.config import ApplicationConfig
+from transport.sanic.endpoints.health import HealthEndpoint
 
 
 def get_routes(config: ApplicationConfig):
     return (
-        (health_endpoint, '/', ['GET', 'POST']),
+        HealthEndpoint(config, '/', methods=['GET', 'POST']),
     )

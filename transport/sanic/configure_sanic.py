@@ -8,11 +8,11 @@ def configure_app(config: ApplicationConfig):
 
     app = Sanic(__name__)
 
-    for handler, uri, methods in get_routes(config):
+    for handler in get_routes(config):
         app.add_route(
             handler=handler,
-            uri=uri,
-            methods=methods,
+            methods=handler.methods,
+            uri=handler.uri,
         )
 
     return app
