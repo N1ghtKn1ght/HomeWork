@@ -25,7 +25,7 @@ class DataBase:
         self.session_factory = sessionmaker(bind=self.connection)
 
     def check_connection(self):
-        self.connection.execute(self._test_query).frechone()
+        self.connection.execute(self._test_query).fetchone()
 
     def make_session(self) -> DBSession:
         session = self.session_factory()
