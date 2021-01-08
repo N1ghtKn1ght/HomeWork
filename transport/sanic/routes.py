@@ -1,10 +1,11 @@
 
 from configs.config import ApplicationConfig
 from context import Context
-from transport.sanic.endpoints.health import HealthEndpoint
+from transport.sanic import endpoints
 
 
 def get_routes(config: ApplicationConfig, context: Context):
     return (
-        HealthEndpoint(config, context, '/', methods=['GET', 'POST']),
+        endpoints.HealthEndpoint(config, context, '/', methods=['GET', 'POST']),
+        endpoints.CreateUserEndpoint(config=config, context=context, uri='/user', methods=['POST'])
     )

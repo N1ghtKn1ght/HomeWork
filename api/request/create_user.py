@@ -10,5 +10,5 @@ class RequestCreateUserDtoSchema(Schema):
     last_name = fields.Str(required=True, allow_none=False)
 
 
-class RequestCreateUserDto(RequestDto):
+class RequestCreateUserDto(RequestDto, RequestCreateUserDtoSchema):
     __schema__ = RequestCreateUserDtoSchema

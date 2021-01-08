@@ -1,13 +1,6 @@
 from marshmallow import Schema, EXCLUDE, ValidationError
-from sanic.exceptions import SanicException
 
-
-class ApiValidationException(SanicException):
-    status = 400
-
-
-class ApiResponseValidationException(SanicException):
-    status = 500
+from api.exceptions import ApiValidationException, ApiResponseValidationException
 
 
 class RequestDto:
