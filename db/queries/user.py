@@ -1,4 +1,4 @@
-from api.request import  RequestCreateUserDto
+from api.request import RequestCreateUserDto
 from db.database import DBSession
 from db.models import DBUser
 

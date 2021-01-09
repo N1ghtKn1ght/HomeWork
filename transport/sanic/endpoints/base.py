@@ -13,6 +13,6 @@ class BaseEndpoint(SanicEndpoint):
         session = database.make_session()
 
         try:
-            return await super()._method(request,body,session, *args, **kwargs)
+            return await super()._method(request, body, session, *args, **kwargs)
         except ValidationException as error:
-            return  await self.make_response_json(status=error.status_code, message=str(error))
+            return await self.make_response_json(status=error.status_code, message=str(error))
