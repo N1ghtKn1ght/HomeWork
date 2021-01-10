@@ -12,7 +12,4 @@ class HealthEndpoint(SanicEndpoint):
         return await self.make_response_json(body=response, status=200)
 
     async def method_post(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
-        response = {
-            'Hi': 'world'
-        }
-        return await self.make_response_json(body=response, status=200)
+        return await self.make_response_json(body=body, status=200)
