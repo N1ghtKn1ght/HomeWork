@@ -123,3 +123,20 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+@ -127,11 +123,3 @@ dmypy.json
+
+# Pyre type checker
+.pyre/
+
+#PyCharm
+.idea
+
+#Data Base
+db.sqlite
+
+Don't forget this.txt
+.idea/workspace.xml
