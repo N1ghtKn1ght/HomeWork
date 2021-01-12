@@ -40,3 +40,10 @@ class ResponseDto:
 
     def dump(self) -> dict:
         return self._data
+
+
+
+
+
+
+
