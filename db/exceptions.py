@@ -4,3 +4,7 @@ class DBIntegrityError(Exception):
 
 class DBDataError(Exception):
     pass
+
+
+class LoginExistsException(Exception):
+    pass

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, VARCHAR, Integer, Sequence
+from sqlalchemy import Column, VARCHAR, VARBINARY
 
 from db.models.base import BaseModel
 
@@ -12,6 +12,9 @@ class DBUser(BaseModel):
         unique=True,
         nullable=False,
     )
-    password = Column(VARCHAR(50))
+    password = Column(
+        VARBINARY,
+        nullable=False
+    )
     first_name = Column(VARCHAR(50))
     last_name = Column(VARCHAR(50))
