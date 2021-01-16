@@ -4,12 +4,12 @@ from db.exceptions import LoginExistsException
 from db.models import DBUser
 
 
-def create_user(session: DBSession, user: RequestCreateUserDto) -> DBUser:
+def create_user(session: DBSession, user: RequestCreateUserDto, hashed_password: bytes) -> DBUser:
     new_user = DBUser(
         first_name=user.first_name,
         last_name=user.last_name,
         login=user.login,
-        password=user.password,
+        password=hashed_password,
     )
     if session.get_user_by_login(new_user.login) is not None:
         raise LoginExistsException

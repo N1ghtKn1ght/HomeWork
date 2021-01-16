@@ -3,6 +3,7 @@ from sanic.response import BaseHTTPResponse
 
 from api.request import RequestCreateUserDto
 from db.database import DBSession
+from helpers.password import generate_hash
 from transport.sanic.endpoints import BaseEndpoint
 from db.exceptions import DBIntegrityError, DBDataError, LoginExistsException
 
@@ -15,8 +16,10 @@ class UserEndpoint(BaseEndpoint):
 
         request_model = RequestCreateUserDto(body)
 
+        hashed_password = generate_hash(request_model.password)
+
         try:
-            user_queries.create_user(session=session, user=request_model)
+            user_queries.create_user(session=session, user=request_model, hashed_password=hashed_password)
         except LoginExistsException:
             return await self.make_response_json(status=409, message='login exits')
         except(DBDataError, DBIntegrityError) as error:

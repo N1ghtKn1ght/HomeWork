@@ -1,0 +1,1 @@
+from .to_hash import generate_hash

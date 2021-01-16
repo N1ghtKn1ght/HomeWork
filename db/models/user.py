@@ -1,4 +1,4 @@
-from sqlalchemy import Column, VARCHAR, VARBINARY
+from sqlalchemy import Column, VARCHAR, VARBINARY, BOOLEAN
 
 from db.models.base import BaseModel
 
@@ -18,3 +18,4 @@ class DBUser(BaseModel):
     )
     first_name = Column(VARCHAR(50))
     last_name = Column(VARCHAR(50))
+    is_delete = Column(BOOLEAN(), nullable=False, default=False)

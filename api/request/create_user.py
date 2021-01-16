@@ -11,14 +11,6 @@ class RequestCreateUserDtoSchema(Schema):
     first_name = fields.Str(required=True, allow_none=False)
     last_name = fields.Str(required=True, allow_none=False)
 
-    @post_load
-    def hash_password(self, data: dict, **kwargs) -> dict:
-        password = data['password']
-        hashed_password = generate_hash(password)
-        data['password'] = hashed_password
-
-        return data
-
 
 class RequestCreateUserDto(RequestDto, RequestCreateUserDtoSchema):
     __schema__ = RequestCreateUserDtoSchema
