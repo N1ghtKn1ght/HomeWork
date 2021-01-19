@@ -13,7 +13,7 @@ def generate_hash(password: str) -> bytes:
         raise GeneratePasswordHashException(str(error))
 
 
-def check_hash(password: str, hsh: bytes) -> bool:
+def check_hash(password: str, hsh: bytes):
     try:
         result = bcrypt.checkpw(
             password=password.encode(),
@@ -21,4 +21,6 @@ def check_hash(password: str, hsh: bytes) -> bool:
         )
     except (TypeError, ValueError) as error:
         raise CheckPasswordHashException(str(error))
-    return result
+
+    if not result:
+        raise CheckPasswordHashException

@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError, DataError
 from sqlalchemy.orm import sessionmaker, Session
 
 from db.exceptions import DBIntegrityError, DBDataError
-from db.models import BaseModel, DBUser
+from db.models import BaseModel, DBUser, DBMessage
 
 
 class DBSession:
@@ -39,6 +39,9 @@ class DBSession:
 
     def get_user_by_login(self, login: str) -> DBUser:
         return self._session.query(DBUser).filter(DBUser.login == login).first()
+
+    def get_message_by_login(self, login: str) -> DBMessage:
+        return self._session.query(DBMessage).filter(DBMessage.recipient == login).all()
 
 
 class DataBase:

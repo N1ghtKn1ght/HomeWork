@@ -6,5 +6,11 @@ class DBDataError(Exception):
     pass
 
 
-class LoginExistsException(Exception):
+class DBLoginExistsException(Exception):
     pass
+
+
+class DBLoginDoesntExistException(Exception):
+    pass
+
+

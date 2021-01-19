@@ -6,6 +6,7 @@ from sanic.response import BaseHTTPResponse, json
 
 from configs.config import ApplicationConfig
 from context import Context
+from db.database import DBSession
 
 
 class SanicEndpoint:
@@ -55,26 +56,26 @@ class SanicEndpoint:
 
         return await self._method(request, body, *args, **kwargs)
 
-    async def _method(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
+    async def _method(self, request: Request, body: dict, session: DBSession, *args, **kwargs) -> BaseHTTPResponse:
         method = request.method.lower()
         func_name = f'method_{method}'
 
         if hasattr(self, func_name):
             func = getattr(self, func_name)
-            return await func(request, body, *args, **kwargs)
+            return await func(request, body,session, *args, **kwargs)
         return await self.method_not_impl(method=method)
 
     async def method_not_impl(self, method: str) -> BaseHTTPResponse:
         return await self.make_response_json(status=500, message=f'Method {method.upper()} not implemented')
 
-    async def method_get(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
+    async def method_get(self, request: Request, body: dict, session: DBSession, *args, **kwargs) -> BaseHTTPResponse:
         return await self.method_not_impl(method='get')
 
-    async def method_post(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
+    async def method_post(self, request: Request, body: dict, session: DBSession, *args, **kwargs) -> BaseHTTPResponse:
         return await self.method_not_impl(method='post')
 
-    async def method_patch(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
+    async def method_patch(self, request: Request, body: dict, session: DBSession, *args, **kwargs) -> BaseHTTPResponse:
         return await self.method_not_impl(method='patch')
 
-    async def method_delete(self, request: Request, body: dict, *args, **kwargs) -> BaseHTTPResponse:
+    async def method_delete(self, request: Request, body: dict, session: DBSession, *args, **kwargs) -> BaseHTTPResponse:
         return await self.method_not_impl(method='delete')

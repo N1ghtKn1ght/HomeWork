@@ -1,7 +1,5 @@
 from marshmallow import Schema, fields
 
-from api.base import ResponseDto
-
 
 class ResponseGetUserDtoSchema(Schema):
     login = fields.Str(required=True)
@@ -9,5 +7,4 @@ class ResponseGetUserDtoSchema(Schema):
     last_name = fields.Str(required=True)
 
 
-class ResponseGetUserDto(ResponseDto, ResponseGetUserDtoSchema):
-    __schema__ = ResponseGetUserDtoSchema
+
