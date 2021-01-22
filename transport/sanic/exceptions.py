@@ -35,3 +35,15 @@ class SanicDBLoginNotFound(SanicException):
 
 class SanicTokenIsNotReadable(SanicException):
     status_code = 401
+
+
+class SanicUserNotFound(SanicException):
+    status_code = 404
+
+
+class SanicUserNotExists(SanicException):
+    status_code = 400
+
+
+class SanicMessageNotFound(SanicException):
+    status_code = 404

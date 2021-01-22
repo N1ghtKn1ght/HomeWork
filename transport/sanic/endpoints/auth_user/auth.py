@@ -26,7 +26,8 @@ class AuthUserEndpoint(BaseEndpoint):
             raise SanicPasswordHashException("password is wrong")
 
         payload = {
-            'login': db_user.login,
+            'user_auth_login': db_user.login,
+            'id_auth': db_user.id
         }
 
         token = create_token(payload, self.config)
@@ -36,5 +37,3 @@ class AuthUserEndpoint(BaseEndpoint):
         }
 
         return await self.make_response_json(body=response_body, status=200,)
-
-

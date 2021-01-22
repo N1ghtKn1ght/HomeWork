@@ -40,8 +40,14 @@ class DBSession:
     def get_user_by_login(self, login: str) -> DBUser:
         return self._session.query(DBUser).filter(DBUser.login == login).first()
 
-    def get_message_by_login(self, login: str) -> DBMessage:
-        return self._session.query(DBMessage).filter(DBMessage.recipient == login).all()
+    def get_user_by_id(self, uid: int) -> DBUser:
+        return self._session.query(DBUser).filter(DBUser.id == uid).first()
+
+    def get_messages_by_login(self, login: str) -> DBMessage:
+        return self._session.query(DBMessage).filter(DBMessage.recipient == login or DBMessage.sender == login).all()
+
+    def get_message_by_id(self, mid: str) -> DBMessage:
+        return self._session.query(DBMessage).filter(DBMessage.id == mid).first()
 
 
 class DataBase:

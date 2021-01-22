@@ -10,7 +10,15 @@ class DBLoginExistsException(Exception):
     pass
 
 
+class DBUserNotExistsException(Exception):
+    pass
+
+
 class DBLoginDoesntExistException(Exception):
+    pass
+
+
+class DBMessageDoesntExistException(Exception):
     pass
 
 

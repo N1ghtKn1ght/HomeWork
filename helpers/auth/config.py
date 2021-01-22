@@ -5,4 +5,4 @@ load_dotenv()
 
 
 class jwtConfig:
-    secret = os.getenv('host', 'Super secret secret')
+    secret = os.getenv('Secret_Auth', 'Super secret secret')

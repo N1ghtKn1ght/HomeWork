@@ -25,6 +25,7 @@ def upgrade():
     sa.Column('message', sa.VARCHAR(length=255), nullable=True),
     sa.Column('recipient', sa.VARCHAR(length=50), nullable=True),
     sa.Column('sender', sa.VARCHAR(), nullable=True),
+    sa.Column('is_delete', sa.BOOLEAN(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
