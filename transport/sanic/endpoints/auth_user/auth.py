@@ -5,7 +5,7 @@ from api.request.auth_user import RequestAuthUserDto
 from db.database import DBSession
 from transport.sanic.endpoints import BaseEndpoint
 from db.queries import user as user_queries
-from db.exceptions import DBLoginDoesntExistException
+from db.exceptions import DBLoginDoesntExistException, DBUserNotExistsException
 from transport.sanic.exceptions import SanicDBLoginNotFound, SanicPasswordHashException
 from helpers.password.to_hash import check_hash
 from helpers.password.exception import CheckPasswordHashException
@@ -20,7 +20,7 @@ class AuthUserEndpoint(BaseEndpoint):
         try:
             db_user = user_queries.get_user(session=session, login=request_model.login)
             check_hash(request_model.password, db_user.password)
-        except DBLoginDoesntExistException:
+        except DBUserNotExistsException:
             raise SanicDBLoginNotFound('Login not found')
         except CheckPasswordHashException:
             raise SanicPasswordHashException("password is wrong")

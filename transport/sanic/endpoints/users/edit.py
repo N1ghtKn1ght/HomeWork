@@ -2,7 +2,7 @@ from sanic.request import Request
 from sanic.response import BaseHTTPResponse
 
 from api.request.patch_user import RequestPatchUserDto
-from api.response.patch_user import ResponsePatchUserDtoSchema
+from api.response.patch_user import ResponsePatchUserDto
 from db.database import DBSession
 from db.exceptions import DBUserNotExistsException, DBDataError, DBIntegrityError
 from transport.sanic.endpoints import BaseEndpoint
@@ -27,6 +27,6 @@ class EditUserEndpoint(BaseEndpoint):
         except(DBDataError, DBIntegrityError) as error:
             raise SanicDBException(str(error))
 
-        response_model = ResponsePatchUserDtoSchema()
+        response_model = ResponsePatchUserDto(user)
 
-        return await self.make_response_json(status=200, body=response_model.dump(user))
+        return await self.make_response_json(status=200, body=response_model.dump())

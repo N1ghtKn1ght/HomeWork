@@ -8,7 +8,7 @@ class ResponsePatchUserDtoSchema(Schema):
     last_name = fields.Str()
     id = fields.Int()
     login = fields.Str()
-    update_at = fields.DateTime()
+
 
 
 class ResponsePatchUserDto(ResponseDto, ResponsePatchUserDtoSchema):

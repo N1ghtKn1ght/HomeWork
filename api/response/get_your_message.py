@@ -1,15 +1,32 @@
-from marshmallow import Schema, fields
+import datetime
+
+from marshmallow import Schema, fields, pre_load, post_load
 
 from api.base import ResponseDto
 
 
 class ResponseYourMessageDtoSchema(Schema):
-    id = fields.Int(required=True)
-    recipient = fields.Str(required=True)
-    message = fields.Str(required=True)
-    created_at = fields.DateTime(required=True)
-    update_at = fields.DateTime(required=True)
+    id = fields.Int()
+    recipient = fields.Str()
+    message = fields.Str()
+    created_at = fields.DateTime()
+    updated_at = fields.DateTime()
+
+    @pre_load
+    @post_load
+    def deserialize_datetime(self, data: dict, **kwargs) -> dict:
+        if 'created_at' in data:
+            data['created_at'] = self.datetime_to_iso(data['created_at'])
+        if 'updated_at' in data:
+            data['updated_at'] = self.datetime_to_iso(data['updated_at'])
+        return data
+
+    @staticmethod
+    def datetime_to_iso(dt):
+        if isinstance(dt, datetime.datetime):
+            return dt.isoformat()
+        return dt
 
 
-class ResponseYourMessageDto(ResponseDto, ResponseYourMessageDtoSchema):
+class ResponseYourMessageDto(ResponseDto):
     __schema__ = ResponseYourMessageDtoSchema

@@ -24,7 +24,7 @@ class BaseModel(Base):
         default=datetime.datetime.utcnow,
     )
 
-    update_at = Column(
+    updated_at = Column(
         TIMESTAMP,
         nullable=False,
         default=datetime.datetime.utcnow,
