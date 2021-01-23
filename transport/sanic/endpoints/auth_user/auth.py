@@ -5,7 +5,7 @@ from api.request.auth_user import RequestAuthUserDto
 from db.database import DBSession
 from transport.sanic.endpoints import BaseEndpoint
 from db.queries import user as user_queries
-from db.exceptions import DBLoginDoesntExistException, DBUserNotExistsException
+from db.exceptions import DBUserNotExistsException
 from transport.sanic.exceptions import SanicDBLoginNotFound, SanicPasswordHashException
 from helpers.password.to_hash import check_hash
 from helpers.password.exception import CheckPasswordHashException
