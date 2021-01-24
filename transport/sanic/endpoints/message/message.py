@@ -31,7 +31,9 @@ class MessageEndpoint(BaseEndpoint):
 
         return await self.make_response_json(body=response_model.dump(), status=200)
 
-    async def method_patch(self, request: Request, body: dict, session: DBSession, token: dict,  mid: int, *args, **kwargs) -> BaseHTTPResponse:
+    async def method_patch(
+            self, request: Request, body: dict, session: DBSession, token: dict,  mid: int, *args, **kwargs
+    ) -> BaseHTTPResponse:
         try:
             db_message = message_queries.get_message(session=session, mid=mid)
         except DBMessageDoesntExistException:
@@ -55,7 +57,9 @@ class MessageEndpoint(BaseEndpoint):
 
         return await self.make_response_json(body=response_model.dump())
 
-    async def method_delete(self, request: Request, body: dict, session: DBSession, token: dict,  mid: int,  *args, **kwargs) -> BaseHTTPResponse:
+    async def method_delete(
+            self, request: Request, body: dict, session: DBSession, token: dict,  mid: int,  *args, **kwargs
+    ) -> BaseHTTPResponse:
         try:
             db_message = message_queries.get_message(session=session, mid=mid)
         except DBMessageDoesntExistException:
