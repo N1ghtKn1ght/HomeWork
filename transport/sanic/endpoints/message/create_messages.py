@@ -38,7 +38,7 @@ class MessagesEndpoint(BaseEndpoint):
         db_messages = message_queries.get_message(session=session, login=token.get('user_auth_login'))
 
         response_body = {
-            'received_messages': ResponseGetMessagesDtoSchema(many=True).dump(db_messages)
+            'received_messages': db_messages.is_delete
         }
 
         return await self.make_response_json(body=response_body, status=200)
