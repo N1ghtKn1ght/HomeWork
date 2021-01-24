@@ -15,8 +15,8 @@ class DBSession:
     def query(self, *args, **kwargs):
         return self._session.query(*args, **kwargs)
 
-    def message(self):
-        return self._session.query(DBMessage).filter(DBMessage.is_delete)
+    #def message(self):
+    #    return self._session.query(DBMessage).filter(DBMessage.is_delete)
 
     def close_session(self):
         self._session.close()
@@ -50,7 +50,7 @@ class DBSession:
         return self._session.query(DBMessage).filter(DBMessage.recipient == login).all()
 
     def get_message_by_id(self, mid: str) -> DBMessage:
-        return self.message().filter(DBMessage.id == mid).first()
+        return self._session.query(DBMessage).filter(DBMessage.id == mid).first()
 
 
 class DataBase:
