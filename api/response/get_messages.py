@@ -8,10 +8,10 @@ from api.base import ResponseDto
 class ResponseGetMessagesDtoSchema(Schema):
     id = fields.Int()
     sender = fields.Str()
+    recipient = fields.Str()
     message = fields.Str()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
-    is_delete = fields.Boolean()
 
     @pre_load
     @post_load
@@ -29,7 +29,7 @@ class ResponseGetMessagesDtoSchema(Schema):
         return dt
 
 
-class ResponseGetMessagesDto(ResponseDto):
+class ResponseGetMessagesDto(ResponseDto, ResponseGetMessagesDtoSchema):
     __schema__ = ResponseGetMessagesDtoSchema
 
 

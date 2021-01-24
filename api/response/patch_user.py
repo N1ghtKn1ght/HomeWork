@@ -10,6 +10,5 @@ class ResponsePatchUserDtoSchema(Schema):
     login = fields.Str()
 
 
-
 class ResponsePatchUserDto(ResponseDto, ResponsePatchUserDtoSchema):
     __schema__ = ResponsePatchUserDtoSchema

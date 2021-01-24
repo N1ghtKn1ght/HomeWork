@@ -26,7 +26,6 @@ class AuthUserEndpoint(BaseEndpoint):
             raise SanicPasswordHashException("password is wrong")
 
         payload = {
-            'user_auth_login': db_user.login,
             'id_auth': db_user.id
         }
 

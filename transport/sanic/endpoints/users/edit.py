@@ -4,11 +4,12 @@ from sanic.response import BaseHTTPResponse
 from api.request.patch_user import RequestPatchUserDto
 from api.response.patch_user import ResponsePatchUserDto
 from db.database import DBSession
-from db.exceptions import DBUserNotExistsException, DBDataError, DBIntegrityError
+from db.exceptions import DBUserNotExistsException, DBDataError, DBIntegrityError, DBLoginExistsException
+from helpers.password import generate_hash
 from transport.sanic.endpoints import BaseEndpoint
 
 from db.queries import user as user_queries
-from transport.sanic.exceptions import SanicUserNotFound, SanicDBException
+from transport.sanic.exceptions import SanicUserNotFound, SanicDBException, SanicLoginExistsException
 
 
 class EditUserEndpoint(BaseEndpoint):
@@ -17,10 +18,14 @@ class EditUserEndpoint(BaseEndpoint):
     ) -> BaseHTTPResponse:
         request_model = RequestPatchUserDto(body)
 
+        hashed_password = None
+
+        if hasattr(request_model, 'password'):
+            hashed_password = generate_hash(request_model.password)
         try:
-            user = user_queries.patch_user(session, request_model, token['id_auth'])
-        except DBUserNotExistsException:
-            raise SanicUserNotFound('User not found')
+            user = user_queries.patch_user(session, request_model, token['id_auth'], hashed_password=hashed_password)
+        except DBLoginExistsException:
+            raise SanicLoginExistsException('login exits')
 
         try:
             session.commit_session()

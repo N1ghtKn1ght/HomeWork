@@ -52,6 +52,9 @@ class DBSession:
     def get_message_by_id(self, mid: str) -> DBMessage:
         return self.message().filter(DBMessage.id == mid).first()
 
+    def get_messages_for_change_login(self, login: str) -> DBMessage:
+        return self._session.query(DBMessage).filter(DBMessage.sender == login or DBMessage.sender == login).all()
+
 
 class DataBase:
     connection: Engine

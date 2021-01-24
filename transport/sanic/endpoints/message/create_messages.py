@@ -7,7 +7,7 @@ from api.response.get_messages import ResponseGetMessagesDtoSchema
 from db.database import DBSession
 from db.exceptions import DBLoginDoesntExistException, DBDataError, DBIntegrityError
 from db.queries import message as message_queries
-
+from db.queries import user as user_queries
 
 from transport.sanic.endpoints import BaseEndpoint
 from transport.sanic.exceptions import SanicDBLoginNotFound, SanicDBException
@@ -21,8 +21,10 @@ class MessagesEndpoint(BaseEndpoint):
 
         request_model = RequestCreateMessageDto(body)
 
+        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
+
         try:
-            message_queries.create_message(session=session, message=request_model, sender=token.get('user_auth_login'))
+            message_queries.create_message(session=session, message=request_model, sender=db_user.login)
             session.commit_session()
         except DBLoginDoesntExistException:
             raise SanicDBLoginNotFound('User not found')
@@ -35,7 +37,9 @@ class MessagesEndpoint(BaseEndpoint):
             self, request: Request, body: dict, session: DBSession, token: dict, *args, **kwargs
     ) -> BaseHTTPResponse:
 
-        db_messages = message_queries.get_message(session=session, login=token.get('user_auth_login'))
+        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
+
+        db_messages = message_queries.get_message(session=session, login=db_user.login)
 
         response_body = {
             'received_messages': ResponseGetMessagesDtoSchema(many=True).dump(db_messages)

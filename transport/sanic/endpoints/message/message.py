@@ -4,12 +4,12 @@ from sanic.response import BaseHTTPResponse
 
 from api.request.patch_message import RequestPatchMessageDto
 from api.response.get_messages import ResponseGetMessagesDto
-from api.response.get_your_message import ResponseYourMessageDto
 from api.response.patch_message import ResponsePatchMessageDto
 from db.database import DBSession
 from db.exceptions import DBMessageDoesntExistException, DBDataError, DBIntegrityError
 from transport.sanic.endpoints import BaseEndpoint
 from db.queries import message as message_queries
+from db.queries import user as user_queries
 from transport.sanic.exceptions import SanicMessageNotFound, SanicDBException
 
 
@@ -22,10 +22,10 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        if db_message.recipient == token.get('user_auth_login'):
+        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
+
+        if db_message.recipient == db_user.login or db_message.sender == db_user.login:
             response_model = ResponseGetMessagesDto(db_message)
-        elif db_message.sender == token.get('user_auth_login'):
-            response_model = ResponseYourMessageDto(db_message)
         else:
             return await self.make_response_json(status=403)
 
@@ -37,7 +37,9 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        if db_message.sender == token.get('user_auth_login'):
+        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
+
+        if db_message.sender == db_user.login:
             request_model = RequestPatchMessageDto(body)
         else:
             return await self.make_response_json(status=403)
@@ -59,7 +61,9 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        if db_message.sender != token.get('user_auth_login'):
+        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
+
+        if db_message.sender != db_user.login:
             return await self.make_response_json(status=403)
 
         message_queries.delete_message(db_message)

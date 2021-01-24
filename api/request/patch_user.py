@@ -1,11 +1,12 @@
 from marshmallow import Schema, fields
-
 from api.base import RequestDto
 
 
 class RequestPatchUserDtoSchema(Schema):
     first_name = fields.Str()
     last_name = fields.Str()
+    login = fields.Str()
+    password = fields.Str()
 
 
 class RequestPatchUserDto(RequestDto, RequestPatchUserDtoSchema):
