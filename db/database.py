@@ -16,7 +16,7 @@ class DBSession:
         return self._session.query(*args, **kwargs)
 
     def message(self):
-        return self._session.query(DBMessage).filter(DBMessage.is_delete == False)
+        return self._session.query(DBMessage).filter(DBMessage.is_delete == 0)
 
     def close_session(self):
         self._session.close()
