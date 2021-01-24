@@ -11,6 +11,7 @@ class ResponseGetMessagesDtoSchema(Schema):
     message = fields.Str()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
+    is_delete = fields.Boolean()
 
     @pre_load
     @post_load
