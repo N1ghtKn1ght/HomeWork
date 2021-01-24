@@ -1,4 +1,4 @@
-from sqlalchemy import Column, VARCHAR, VARBINARY, BOOLEAN
+from sqlalchemy import Column, VARCHAR, BOOLEAN, LargeBinary
 
 from db.models.base import BaseModel
 
@@ -13,7 +13,7 @@ class DBUser(BaseModel):
         nullable=False,
     )
     password = Column(
-        VARBINARY,
+        LargeBinary,
         nullable=False
     )
     first_name = Column(VARCHAR(50))
