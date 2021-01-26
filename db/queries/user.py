@@ -36,7 +36,8 @@ def patch_user(session: DBSession, user: RequestPatchUserDto, uid: int, *, hashe
     db_user = session.get_user_by_id(uid)
 
     if hasattr(user, 'login'):
-        _change_login(session, user.login, db_user.login)
+        if session.get_user_by_login(user.login) is not None:
+            raise DBLoginExistsException
 
     for attr in user.fields:
         if hashed_password is not None and attr == 'password':
@@ -46,15 +47,3 @@ def patch_user(session: DBSession, user: RequestPatchUserDto, uid: int, *, hashe
 
     return db_user
 
-
-def _change_login(session: DBSession, login: str, last_login: str):
-    if session.get_user_by_login(login) is not None:
-        raise DBLoginExistsException
-    db_messages = session.get_messages_for_change_login(last_login)
-    for message in db_messages:
-        if message.sender == last_login:
-            message.sender = login
-        if message.recipient == last_login:
-            message.recipient = login
-    print(db_messages)
-    session.commit_session()

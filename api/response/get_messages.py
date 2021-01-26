@@ -7,8 +7,8 @@ from api.base import ResponseDto
 
 class ResponseGetMessagesDtoSchema(Schema):
     id = fields.Int()
-    sender = fields.Str()
-    recipient = fields.Str()
+    sender_id = fields.Int()
+    recipient_id = fields.Int()
     message = fields.Str()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()

@@ -10,6 +10,6 @@ class ApplicationConfig:
 
     def __init__(self):
         self.sanic = SanicConfig()
-        #self.database = SQLiteConfig()
+        self.database = SQLiteConfig()
         self.jwt = jwtConfig()
-        self.database = PostgresConfig()
+        #self.database = PostgresConfig()

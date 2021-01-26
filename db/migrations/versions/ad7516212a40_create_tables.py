@@ -1,8 +1,8 @@
-"""create table
+"""create tables
 
-Revision ID: 2552a8767b54
+Revision ID: ad7516212a40
 Revises: 
-Create Date: 2021-01-19 18:09:06.687619
+Create Date: 2021-01-26 10:13:53.162702
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2552a8767b54'
+revision = 'ad7516212a40'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,9 +23,9 @@ def upgrade():
     sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('message', sa.VARCHAR(length=255), nullable=True),
-    sa.Column('recipient', sa.VARCHAR(length=50), nullable=True),
-    sa.Column('sender', sa.VARCHAR(), nullable=True),
-    sa.Column('is_delete', sa.BOOLEAN(), nullable=False),
+    sa.Column('recipient_id', sa.Integer(), nullable=True),
+    sa.Column('sender_id', sa.Integer(), nullable=True),
+    sa.Column('is_delete', sa.BOOLEAN(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
@@ -34,7 +34,7 @@ def upgrade():
     sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('login', sa.VARCHAR(length=50), nullable=False),
-    sa.Column('password', sa.LargeBinary, nullable=False),
+    sa.Column('password', sa.LargeBinary(), nullable=False),
     sa.Column('first_name', sa.VARCHAR(length=50), nullable=True),
     sa.Column('last_name', sa.VARCHAR(length=50), nullable=True),
     sa.Column('is_delete', sa.BOOLEAN(), nullable=False),

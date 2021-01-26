@@ -5,24 +5,24 @@ from db.exceptions import DBLoginDoesntExistException, DBMessageDoesntExistExcep
 from db.models import DBMessage
 
 
-def create_message(session: DBSession, message: RequestCreateMessageDto, sender: str) -> DBMessage:
+def create_message(session: DBSession, message: RequestCreateMessageDto, sender: int) -> DBMessage:
     new_message = DBMessage(
-        recipient=message.recipient,
+        recipient_id=message.recipient_id,
         message=message.message,
-        sender=sender,
+        sender_id=sender,
     )
-    if session.get_user_by_login(message.recipient) is None:
+    if session.get_user_by_id(uid=message.recipient_id) is None:
         raise DBLoginDoesntExistException
     session.add_model(new_message)
 
     return new_message
 
 
-def get_message(session: DBSession, *, login: str = None, mid: int = None) -> DBMessage:
+def get_message(session: DBSession, *, user_id: int = None, mid: int = None) -> DBMessage:
     db_message = None
 
-    if login is not None:
-        db_message = session.get_messages_by_login(login)
+    if user_id is not None:
+        db_message = session.get_messages_by_login(user_id)
     else:
         db_message = session.get_message_by_id(mid)
 

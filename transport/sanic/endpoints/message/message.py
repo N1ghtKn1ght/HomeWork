@@ -9,7 +9,6 @@ from db.database import DBSession
 from db.exceptions import DBMessageDoesntExistException, DBDataError, DBIntegrityError
 from transport.sanic.endpoints import BaseEndpoint
 from db.queries import message as message_queries
-from db.queries import user as user_queries
 from transport.sanic.exceptions import SanicMessageNotFound, SanicDBException
 
 
@@ -22,9 +21,7 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
-
-        if db_message.recipient == db_user.login or db_message.sender == db_user.login:
+        if db_message.recipient_id == token.get('id_auth') or db_message.sender_id == token.get('id_auth'):
             response_model = ResponseGetMessagesDto(db_message)
         else:
             return await self.make_response_json(status=403)
@@ -39,9 +36,7 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
-
-        if db_message.sender == db_user.login:
+        if db_message.sender_id == token.get('id_auth'):
             request_model = RequestPatchMessageDto(body)
         else:
             return await self.make_response_json(status=403)
@@ -65,9 +60,7 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        db_user = user_queries.get_user(session=session, user_id=token.get('id_auth'))
-
-        if db_message.sender != db_user.login:
+        if db_message.sender_id != token.get('id_auth'):
             return await self.make_response_json(status=403)
 
         message_queries.delete_message(db_message)
@@ -77,4 +70,4 @@ class MessageEndpoint(BaseEndpoint):
         except(DBDataError, DBIntegrityError) as error:
             raise SanicDBException(str(error))
 
-        return await self.make_response_json(status=204)
+        return await self.make_response_json(status=204, body=None)
