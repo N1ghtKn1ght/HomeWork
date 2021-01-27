@@ -7,8 +7,8 @@ from api.response.get_messages import ResponseGetMessagesDto
 from api.response.patch_message import ResponsePatchMessageDto
 from db.database import DBSession
 from db.exceptions import DBMessageDoesntExistException, DBDataError, DBIntegrityError
-from transport.sanic.endpoints import BaseEndpoint
 from db.queries import message as message_queries
+from transport.sanic.endpoints import BaseEndpoint
 from transport.sanic.exceptions import SanicMessageNotFound, SanicDBException
 
 

@@ -22,7 +22,7 @@ def get_message(session: DBSession, *, user_id: int = None, mid: int = None) -> 
     db_message = None
 
     if user_id is not None:
-        db_message = session.get_messages_by_login(user_id)
+        db_message = session.get_messages_by_user_id(user_id)
     else:
         db_message = session.get_message_by_id(mid)
 
