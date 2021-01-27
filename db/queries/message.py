@@ -1,18 +1,18 @@
 from api.request.create_message import RequestCreateMessageDto
 from api.request.patch_message import RequestPatchMessageDto
 from db.database import DBSession
-from db.exceptions import DBLoginDoesntExistException, DBMessageDoesntExistException
+from db.exceptions import DBMessageDoesntExistException, DBUserNotExistsException
 from db.models import DBMessage
 
 
 def create_message(session: DBSession, message: RequestCreateMessageDto, sender: int) -> DBMessage:
+    if session.get_user_by_id(uid=message.recipient_id) is None:
+        raise DBUserNotExistsException
     new_message = DBMessage(
         recipient_id=message.recipient_id,
         message=message.message,
         sender_id=sender,
     )
-    if session.get_user_by_id(uid=message.recipient_id) is None:
-        raise DBLoginDoesntExistException
     session.add_model(new_message)
 
     return new_message

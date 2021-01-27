@@ -5,11 +5,11 @@ from api.request.create_message import RequestCreateMessageDto
 from api.response.get_messages import ResponseGetMessagesDtoSchema
 
 from db.database import DBSession
-from db.exceptions import DBLoginDoesntExistException, DBDataError, DBIntegrityError
+from db.exceptions import DBDataError, DBIntegrityError, DBUserNotExistsException
 from db.queries import message as message_queries
 
 from transport.sanic.endpoints import BaseEndpoint
-from transport.sanic.exceptions import SanicDBLoginNotFound, SanicDBException
+from transport.sanic.exceptions import SanicDBException, SanicUserNotFound
 
 
 class MessagesEndpoint(BaseEndpoint):
@@ -23,8 +23,8 @@ class MessagesEndpoint(BaseEndpoint):
         try:
             message_queries.create_message(session=session, message=request_model, sender=token.get('id_auth'))
             session.commit_session()
-        except DBLoginDoesntExistException:
-            raise SanicDBLoginNotFound('User not found')
+        except DBUserNotExistsException:
+            raise SanicUserNotFound('User not found')
         except(DBDataError, DBIntegrityError) as error:
             raise SanicDBException(str(error))
 

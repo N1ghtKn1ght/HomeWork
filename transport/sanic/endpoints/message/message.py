@@ -36,10 +36,10 @@ class MessageEndpoint(BaseEndpoint):
         except DBMessageDoesntExistException:
             raise SanicMessageNotFound('message not found')
 
-        if db_message.sender_id == token.get('id_auth'):
-            request_model = RequestPatchMessageDto(body)
-        else:
+        if db_message.sender_id != token.get('id_auth'):
             return await self.make_response_json(status=403)
+
+        request_model = RequestPatchMessageDto(body)
 
         message = message_queries.patch_message(db_message, request_model)
 
