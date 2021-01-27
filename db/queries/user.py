@@ -40,7 +40,7 @@ def patch_user(session: DBSession, user: RequestPatchUserDto, uid: int, *, hashe
             raise DBLoginExistsException
 
     for attr in user.fields:
-        if hashed_password is not None and attr == 'password':
+        if attr == 'password' and hashed_password is not None:
             setattr(db_user, attr, hashed_password)
         elif hasattr(user, attr):
             setattr(db_user, attr, getattr(user, attr))

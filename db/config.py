@@ -10,7 +10,7 @@ class SQLiteConfig:
 
 
 class PostgresConfig:
-    name = os.getenv('POSTGRES_NAME', 'messager')
+    name = os.getenv('POSTGRES_DB', 'messager')
     user = os.getenv('POSTGRES_USER', 'admin')
     password = os.getenv('POSTGRES_PASSWORD', '123')
     host = os.getenv('POSTGRES_HOST', 'messager-db')
