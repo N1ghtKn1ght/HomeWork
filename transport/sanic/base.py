@@ -6,7 +6,6 @@ from sanic.response import BaseHTTPResponse, json
 
 from configs.config import ApplicationConfig
 from context import Context
-from db.database import DBSession
 from helpers.auth.exceptions import ReadTokenException
 from helpers.auth.token import read_token
 from transport.sanic.exceptions import SanicTokenIsNotReadable
@@ -67,10 +66,11 @@ class SanicEndpoint:
             if header.lower().startswith('x-')
         }
 
-    def import_body_auth(self, request: Request) -> dict:
+    @staticmethod
+    def import_body_auth(request: Request) -> dict:
         token = request.headers.get('Authorization')
         try:
-            return read_token(token, self.config)
+            return read_token(token)
         except ReadTokenException as error:
             raise SanicTokenIsNotReadable(str(error))
 

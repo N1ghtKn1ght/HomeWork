@@ -3,17 +3,20 @@ import datetime
 import jwt
 import jwt.exceptions
 
-from configs.config import ApplicationConfig
+from helpers.auth.config import jwtConfig
 from helpers.auth.exceptions import ReadTokenException
 
 
-def create_token(payload: dict, config: ApplicationConfig) -> str:
-    payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(weeks=1)
-    return jwt.encode(payload, config.jwt.secret, algorithm='HS256')
+def create_token(data: dict, *, lifetime: int = 1) -> str:
+    payload = {
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(weeks=lifetime)
+    }
+    payload.update(data)
+    return jwt.encode(payload, jwtConfig.secret, algorithm='HS256')
 
 
-def read_token(token: str, config: ApplicationConfig) -> dict:
+def read_token(token: str) -> dict:
     try:
-        return jwt.decode(token, config.jwt.secret, algorithms='HS256')
+        return jwt.decode(token, jwtConfig.secret, algorithms='HS256')
     except (jwt.PyJWKError, jwt.DecodeError):
         raise ReadTokenException

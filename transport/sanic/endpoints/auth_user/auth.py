@@ -25,11 +25,11 @@ class AuthUserEndpoint(BaseEndpoint):
         except CheckPasswordHashException:
             raise SanicPasswordHashException("password is wrong")
 
-        payload = {
+        data = {
             'id_auth': db_user.id
         }
 
-        token = create_token(payload, self.config)
+        token = create_token(data)
 
         response_body = {
             'Authorization': token
