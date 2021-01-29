@@ -1,6 +1,6 @@
 
 from transport.sanic.config import SanicConfig
-from db.config import PostgresConfig
+from db.config import SQLiteConfig, PostgresConfig
 
 
 class ApplicationConfig:
